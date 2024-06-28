@@ -2,12 +2,12 @@
 GPU = True                                  # running on GPU is highly suggested
 TEST_MODE = False                           # turning on the testmode means the code will run on a small dataset.
 CLEAN = True                               # set to "True" if you want to clean the temporary large files after generating result
-MODEL = 'resnet18'                          # model arch: resnet18, alexnet, resnet50, densenet161
-DATASET = 'places365'                       # model trained on: places365 or imagenet
+MODEL = 'finetune_resnet_gelu'                          # model arch: resnet18, alexnet, resnet50, densenet161
+DATASET = 'imagenet'                       # model trained on: places365 or imagenet
 QUANTILE = 0.005                            # the threshold used for activation
 SEG_THRESHOLD = 0.04                        # the threshold used for visualization
 SCORE_THRESHOLD = 0.04                      # the threshold used for IoU score (in HTML file)
-TOPN = 10                                   # to show top N image with highest activation for each unit
+TOPN = 15                                   # to show top N image with highest activation for each unit
 PARALLEL = 1                                # how many process is used for tallying (Experiments show that 1 is the fastest)
 CATAGORIES = ["object", "part","scene","texture","color"] # concept categories that are chosen to detect: "object", "part", "scene", "material", "texture", "color"
 OUTPUT_FOLDER = "result/pytorch_"+MODEL+"_"+DATASET # result will be stored in this folder
@@ -49,11 +49,23 @@ elif MODEL == 'densenet161':
     if DATASET == 'places365':
         MODEL_FILE = 'zoo/whole_densenet161_places365_python36.pth.tar'
         MODEL_PARALLEL = False
-elif MODEL == 'resnet50':
+# elif  MODEL == 'resnet50':
+#     FEATURE_NAMES = ['layer4']
+#     if DATASET == 'places365':
+#         MODEL_FILE = 'zoo/whole_resnet50_places365_python36.pth.tar'
+#         MODEL_PARALLEL = False
+elif 'gelu' in MODEL:
+    if MODEL == 'finetune_resnet_gelu':
+        MODEL_FILE = 'zoo/checkpoint-3.pth.tar'
+    elif MODEL == 'advtrain_resnet_gelu':
+        MODEL_FILE = 'zoo/snapshot-49-5003.pth.tar'
+    elif MODEL == 'gradnorm_resnet_gelu':
+        MODEL_FILE = 'zoo/gradnorm_resnet_gelu'
+    # TODO - Not parallel until figure out if breaks
+    MODEL_PARALLEL = False
+    MODEL = 'resnet50'
+    # TODO - more features, this is for test
     FEATURE_NAMES = ['layer4']
-    if DATASET == 'places365':
-        MODEL_FILE = 'zoo/whole_resnet50_places365_python36.pth.tar'
-        MODEL_PARALLEL = False
 
 if TEST_MODE:
     WORKERS = 1
