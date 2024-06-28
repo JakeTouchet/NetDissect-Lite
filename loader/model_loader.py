@@ -22,6 +22,15 @@ def loadmodel(hook_fn):
         else:
             # TODO - don't use parallel, at least for test, don't know if can replace
             model = timm.models.create_model("resnet50", checkpoint_path=settings.MODEL_FILE)
+            # Replace with gelu
+            def replace_layers(model, old, new):
+                for n, module in model.named_children():
+                    if len(list(module.children())) > 0:
+                        ## compound module, go inside it
+                        replace_layers(module, old, new)
+                    if isinstance(module, old):
+                        ## simple module
+                        setattr(model, n, new)
     for name in settings.FEATURE_NAMES:
         model._modules.get(name).register_forward_hook(hook_fn)
     if settings.GPU:
