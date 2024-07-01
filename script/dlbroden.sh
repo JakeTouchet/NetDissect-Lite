@@ -14,7 +14,7 @@ pushd dataset
 wget --progress=bar \
    http://netdissect.csail.mit.edu/data/broden1_224.zip \
    -O broden1_224.zip
-unzip broden1_224.zip
+unzip broden1_224.zip -q
 rm broden1_224.zip
 popd
 

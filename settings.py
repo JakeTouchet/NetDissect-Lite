@@ -56,11 +56,11 @@ elif MODEL == 'densenet161':
 #         MODEL_PARALLEL = False
 elif 'gelu' in MODEL:
     if MODEL == 'finetune_resnet_gelu':
-        MODEL_FILE = 'zoo/checkpoint-3.pth.tar'
+        MODEL_FILE = 'zoo/finetune_resnet_gelu/checkpoint-3.pth.tar'
     elif MODEL == 'advtrain_resnet_gelu':
-        MODEL_FILE = 'zoo/snapshot-49-5003.pth.tar'
+        MODEL_FILE = 'zoo/advtrain_resnet_gelu/snapshot-49-5003.pth.tar'
     elif MODEL == 'gradnorm_resnet_gelu':
-        MODEL_FILE = 'zoo/gradnorm_resnet_gelu'
+        MODEL_FILE = 'zoo/gradnorm_resnet_gelu/snapshot-49-5003.pth.tar'
     # TODO - Not parallel until figure out if breaks
     MODEL_PARALLEL = False
     MODEL = 'resnet50'
